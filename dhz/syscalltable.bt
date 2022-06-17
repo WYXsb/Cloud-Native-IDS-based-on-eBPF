@@ -1,0 +1,33 @@
+#!/usr/bin/env bpftrace
+
+#include <linux/kernel.h>
+#include <asm/unistd.h>
+
+// check syscall-fun in kernel text boundary
+
+BEGIN{
+    printf("trace syscalls to detect LKM-Rootkit ...... Hit Ctrl-C to end.\n");
+    printf("%-8s %-24s %-6s %s\n",
+        "TIME","EVENT","PID","describe");
+}
+
+kretprobe:do_init_module  // right
+{
+    $sys_call_table = kaddr("sys_call_table");
+    $text_start = kaddr("_stext");
+    $text_end = kaddr("_etext");
+    // printf("+++++++++++ kernel text_range : %p  ~ %p ++++++++++++++++ \n",$text_start,$text_end); describe
+    $i = 0; 
+    while ($i <= 335) { 
+        $addr = (uint64)*(((uint64)$sys_call_table)+(uint64)$i*8);
+        // printf("sys_call_table[%d] %s \n",$i,ksym(   (uint64)$addr ));
+        if((uint64)$addr<(uint64)$text_start || (uint64)$addr>(uint64)$text_end){     // check in kernel text boundary
+            time("%H:%M:%S ");
+            printf("%-24s %-6d  sys_call_table[%d] be hooked and point at %s\n",
+                "[Rootkit-kernel]",pid, $i, ksym((uint64)$addr));
+            // printf("+++++++++++ sys_call_table[%d] is be hooked ++++++++++++++++ \n",$i);
+            // printf("+++++++++++ sys_call_table[%d] is point at %s  ++++++++++++++++ \n",$i, ksym((uint64)$addr));
+        }
+        $i++}
+    // exit();
+}

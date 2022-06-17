@@ -1,0 +1,33 @@
+#!/usr/bin/env bpftrace
+/* Monitor running sh or bash inside containers. */
+/* Run with "sudo bpftrace container_shell.bt" */
+
+#include <linux/sched.h>
+#include <linux/nsproxy.h>
+#include <linux/utsname.h>
+#include <linux/pid_namespace.h>
+
+BEGIN {
+    printf("%-12s %-18s %-6s %-6s %-16s %s\n", "PID-ns", "CONTAINER", "PPID", "PID", "COMM", "ARGS");
+    $host_task = (struct task_struct *)curtask;
+    @host_pidns = $host_task->nsproxy->pid_ns_for_children->ns.inum;
+    // $cname = $host_task->nsproxy->uts_ns->name.nodename;
+}
+
+//  sh、bash、csh、tcsh、ash，zsh
+tracepoint:syscalls:sys_enter_execve,
+tracepoint:syscalls:sys_enter_execveat
+/comm == "bash" || comm == "sh" || comm == "csh" || comm == "tcsh" || comm == "ash" || comm == "zsh" / {
+    $task = (struct task_struct *)curtask;
+    $pidns = $task->nsproxy->pid_ns_for_children->ns.inum;
+    $cname = $task->nsproxy->uts_ns->name.nodename;
+    // $host_pidns = 4026531836; /* TODO: replace 4026531836 with host pidns (lsns -t pid) */
+    if ($pidns != @host_pidns) 
+    {
+        printf("%-12ld %-18s %-6d %-6d %-16s ", $pidns, $cname, curtask->parent->pid, pid , comm); 
+        join(args->argv);
+        // printf("shell command in container %s (pidns: %ld): %s ", $cname, $pidns, comm); join(args->argv);    
+        // printf("Killing shell command in container %s (pidns: %ld): %s ", $cname, $pidns, comm); join(args->argv);
+        // signal(9);
+    }
+}

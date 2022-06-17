@@ -1,0 +1,30 @@
+./runbpf.sh: 3: ./runbpf.sh: {: not found
+ERROR: bpftrace currently only supports running as the root user.
+./runbpf.sh: 5: ./runbpf.sh: Syntax error: "}" unexpected
+./run.sh: 1: ./run.sh: ./installbpf.sh: not found
+./run.sh: 2: ./run.sh: : not found
+./runbpf.sh: 3: ./runbpf.sh: {: not found
+ERROR: bpftrace currently only supports running as the root user.
+./runbpf.sh: 5: ./runbpf.sh: Syntax error: "}" unexpected
+ERROR: bpftrace currently only supports running as the root user.
+Error opening file './dhz/rootkit.bt': No such file or directory
+ERROR: bpftrace currently only supports running as the root user.
+ERROR: bpftrace currently only supports running as the root user.
+Error opening file './wyx/syscalls_seq.bt': No such file or directory
+ERROR: bpftrace currently only supports running as the root user.
+Error opening file './dhz/rootkit.bt': No such file or directory
+ERROR: bpftrace currently only supports running as the root user.
+ERROR: bpftrace currently only supports running as the root user.
+ERROR: bpftrace currently only supports running as the root user.
+ERROR: bpftrace currently only supports running as the root user.Error opening file './wyx/syscalls_seq.bt': No such file or directory
+
+Error opening file './dhz/rootkit.bt': No such file or directory
+Error opening file './wyx/syscalls_seq.bt': No such file or directory
+./dhz/rootkit.bt:33:29-50: ERROR: syntax error, unexpected identifier
+        if (@pre_flag==1 && $timenum>10_000000000 )  // 10s 一次
+                            ~~~~~~~~~~~~~~~~~~~~~
+Error opening file './wyx/syscalls_seq.bt': No such file or directory
+Error opening file './wyx/container.bt': No such file or directory
+./dhz/rootkit.bt:33:29-50: ERROR: syntax error, unexpected identifier
+        if (@pre_flag==1 && $timenum>10_000000000 )  // 10s 一次
+                            ~~~~~~~~~~~~~~~~~~~~~

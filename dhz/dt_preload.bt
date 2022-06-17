@@ -1,0 +1,37 @@
+#!/usr/bin/env bpftrace
+
+BEGIN
+{
+	printf("trace syscalls to detect dynamic injection ...... Hit Ctrl-C to end.\n");
+    @preload = "/etc/ld.so.preload";
+    @count = -1;
+}
+
+tracepoint:syscalls:sys_enter_open,
+tracepoint:syscalls:sys_enter_openat
+{
+    @open_filename[pid] = args->filename;
+    // @openat_mode[pid] = args->mode;
+    // printf("%-16s sys_enter_openat (%s )  =   \n", comm,str(args->filename));
+}
+
+tracepoint:syscalls:sys_exit_open,
+tracepoint:syscalls:sys_exit_openat
+/@open_filename[pid]/
+{
+    if( (@preload == str(@open_filename[pid])) && args->ret!=-1){
+        @count = @count+1;
+        if ((uint64)@count%10 == 0)
+        {
+            printf("[+] You may have been dynamically injected !!! \n");
+            printf("[+] please check these *.so files  by yourself !!! \n");
+            printf("[!]  %s \n",str(@open_filename[pid]));
+            printf("==================================================\n");
+        }  
+    }
+}
+END
+{
+    clear(@open_filename);
+    clear(@preload);
+}

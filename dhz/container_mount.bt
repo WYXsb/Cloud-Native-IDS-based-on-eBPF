@@ -1,0 +1,72 @@
+#!/usr/bin/env bpftrace
+
+#include <linux/sched.h>
+#include <linux/nsproxy.h>
+#include <linux/utsname.h>
+#include <linux/pid_namespace.h>
+
+// @proc_self = "/proc/self/";
+// @proc = "/proc";
+// @cgroup = "cgroup";
+// @dev_sd = "/dev/sd";
+// @etc = "/etc/crontab";
+// @root = "/root";
+// @sock = "/var/run/docker.sock";
+// @proc_pat = "/proc/sys/kernel/core_pattern";
+
+BEGIN 
+{
+    printf("tracing mount syscall... \n");
+    // printf("%-8s %-6s %-18s %-18s RET\n", Sensitive file mounts
+    //     "TIME","PID","dev_name","dir_name");
+
+    printf("%-8s %-24s %-6s %-18s %-18s\n",
+        "TIME","EVENT","PID","dev_name","dir_name");
+    $host_task = (struct task_struct *)curtask;
+    @host_pidns = $host_task->nsproxy->pid_ns_for_children->ns.inum;
+
+}
+
+tracepoint:syscalls:sys_enter_mount
+{
+    $task = (struct task_struct *)curtask;
+    $pidns = $task->nsproxy->pid_ns_for_children->ns.inum;
+    $cname = $task->nsproxy->uts_ns->name.nodename;
+
+   // && strncmp(str(args->dir_name), @cur, 1)  && strncmp(str(args->dir_name), @root, 1)
+    if ($pidns != @host_pidns) {
+        // if ((strncmp(str(args->dev_name), "/proc/self", 10)!=0) && (strncmp(str(args->dev_name), "/proc", 5)==0) )
+        // {
+        //     // printf("【proc】: ");
+        //     time("%H:%M:%S ");
+        //     printf("%-24s %-6d %-18s %-18s\n",
+        //         "[Sensitive file mounts]",pid, str(args->dev_name), str(args->dir_name));
+        // }
+        if ((strncmp(str(args->dev_name), "cgroup", 6)==0) 
+                || (strncmp(str(args->dev_name), "/dev/sd", 7)==0) 
+                // || (strncmp(str(args->dev_name), "/etc/crontab", 12)==0) //+
+                || (strncmp(str(args->dev_name), "/etc", 4)==0) 
+                || (strncmp(str(args->dev_name), "/root", 5)==0)
+                // || (strncmp(str(args->dev_name), "/var/run/docker.sock", 20)==0)          //+
+                || (strncmp(str(args->dev_name), "/var/run", 9)==0)   
+                // || (strncmp(str(args->dev_name), "/proc/sys/kernel/core_pattern", 29)==0)      //+
+                || (strncmp(str(args->dev_name), "/proc/sys/kernel", 16)==0)  
+                || (str(args->dev_name)=="/proc")
+                // || (str(args->dev_name)=="/proc/sys")
+                )
+        {
+            // printf("【other】: ");
+            time("%H:%M:%S ");
+            printf("%-24s %-6d %-18s %-18s\n",
+                "[Sensitive file mounts]",pid, str(args->dev_name), str(args->dir_name));
+        }
+        
+        // time("%H:%M:%S ");
+        // printf("%-6d %-18s %-18s\n",
+        //     pid, str(args->dev_name), str(args->dir_name));
+    }
+}
+
+END{
+    clear(@host_pidns);
+}
