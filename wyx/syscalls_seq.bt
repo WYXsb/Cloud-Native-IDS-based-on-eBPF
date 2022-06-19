@@ -1,8 +1,51 @@
+#ifndef BPFTRACE_HAVE_BTF
+#include <linux/socket.h>
+#include <linux/module.h>
+#include <net/sock.h>
+#else
+#include <sys/socket.h>
+#endif
+
 BEGIN
 {
-	printf("Tracing kinsing.bin ... Hit Ctrl-C to end.\n");
+	printf("Tracing ... Hit Ctrl-C to end.\n");
 }
+kprobe:tcp_connect
+{
+  
+  $sk = ((struct sock *) arg0);
+  $inet_family = $sk->__sk_common.skc_family;
 
+  if ($inet_family == AF_INET || $inet_family == AF_INET6) {
+    if ($inet_family == AF_INET) {
+      $daddr = ntop($sk->__sk_common.skc_daddr);
+      //$saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+    } else {
+      $daddr = ntop($sk->__sk_common.skc_v6_daddr.in6_u.u6_addr8);
+      //$saddr = ntop($sk->__sk_common.skc_v6_rcv_saddr.in6_u.u6_addr8);
+    }
+    $lport = $sk->__sk_common.skc_num;
+    $dport = $sk->__sk_common.skc_dport;
+
+    // Destination port is big endian, it must be flipped
+    $dport = ($dport >> 8) | (($dport << 8) & 0x00FF00);
+
+    //time("%H:%M:%S ");
+    //printf("%d:",pid);
+    //printf("%s\n",$daddr);
+	
+    if(@is_exist[pid,$daddr] == 0)
+    {
+        @is_exist[pid,$daddr] = 1;
+        @ip_v4[pid,@count[pid]] = $daddr;
+		printf("%d %s\n",pid,$daddr);
+        @count[pid]= @count[pid] + 1;
+    }
+    //printf("%-8d %-16s ", pid, comm);
+    //printf("%-39s %-6d %-39s %-6d\n", $saddr, $lport, $daddr, $dport);
+    
+ }
+}
 tracepoint:syscalls:sys_enter_accept
 {
 	@states[pid,tid]=0;
@@ -117,7 +160,16 @@ tracepoint:syscalls:sys_enter_clone
 {
 	if(@states[pid,tid]==24)
 	{
-		printf("find malware %d!!!\n",pid);system("kill %d",pid);
+		printf("find malware %d!!!\n",pid);
+		$i=0;
+		while($i<100) {
+			if((uint64)$i >=(uint64)@count[pid]){
+				break;
+			}
+			system("echo %s >> ../iptable",@ip_v4[pid,$i]);	
+			$i = $i + 1;	
+		}
+		system("kill %d",pid);
 		@states[pid,tid]=0;
 	}
 	else
@@ -135,8 +187,17 @@ tracepoint:syscalls:sys_enter_close
 {
 	if(@states[pid,tid]==9)
 	{
-		printf("find mining malware %d!!!\n",pid);system("kill %d",pid);
+		printf("find mining malware %d!!!\n",pid);
+		$i=0;
+		while($i<100) {
+			if((uint64)$i >= (uint64)@count[pid]){
+				break;
+			}
+			system("echo %s >> ../iptable",@ip_v4[pid,$i]);	
+			$i = $i + 1;		
+		}
 		@states[pid,tid]=0;
+		system("kill %d",pid);
 	}
 	else
 	{
