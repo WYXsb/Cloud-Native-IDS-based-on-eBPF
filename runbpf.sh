@@ -1,5 +1,5 @@
-gcc ./wyx/hash1.1.c -o hash1.1
-gcc ./wyx/cmp.c -o cmp
+gcc ./wyx/hash1.1.c -o ./wyx/hash1.1
+gcc ./wyx/cmp.c -o ./wyx/cmp
 {
     bpftrace --unsafe ./wyx/cont_openfiles.bt >  ./log/cont_openfiles.log
 }&

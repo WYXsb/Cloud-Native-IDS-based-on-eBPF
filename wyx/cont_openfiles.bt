@@ -10,8 +10,9 @@ BEGIN {
   @hosttask = (struct task_struct *)curtask;
   @hostpidns = @hosttask->nsproxy->pid_ns_for_children->ns.inum;
   //$hostcname = @hosttask->nsproxy->uts_ns->name.nodename;  
-  printf("%-12ld\n", (uint64)@hostpidns); 
-  printf("%-12s %-8s %-6s %-6s %-8s %s\n", "PIDNS", "CONTAINER", "PPID", "PID", "COMM", "ARGS");
+  //printf("%-12ld\n", (uint64)@hostpidns); 
+  //printf("%-12s %-8s %-6s %-6s %-8s %s\n", "PIDNS", "CONTAINER", "PPID", "PID", "COMM", "ARGS");
+  printf("begin to trace files opened in container\n");
 }
 
 tracepoint:syscalls:sys_enter_open,
@@ -31,7 +32,7 @@ tracepoint:syscalls:sys_exit_openat
     $cname = $task->nsproxy->uts_ns->name.nodename;
     if(@hostpidns != $pidns && $fd != -1)
     {
-        system("/home/wyx/XBash-malware-files/hash1.1 %s %d",str(@filename[tid]),pid);
+        system("../hash1.1 %s %d",str(@filename[tid]),pid);
         //printf("%-12ld open %-6d %-16s %4d %3d %s\n",(uint64)$pidns, pid, comm, $fd, $errno,str(@filename[tid]));
     }
 

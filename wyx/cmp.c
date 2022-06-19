@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     pid = argv[2];
-    file = fopen("hash.txt", "r");
+    file = fopen("./hash.txt", "r");
     fgets(buf, 17, file);
     sum = atoi(buf);
     // printf("%s\n",argv[1]);

@@ -343,7 +343,7 @@ int sha1(char* buff,char* pid)
     //printf("%s\n",buff);
     //printf("%08x %08x %08x %08x %08x\n", state[0], state[1], state[2], state[3], state[4]);
     //printf("warning mining process %s killed\n",pid);
-    sprintf(comm, "/home/wyx/XBash-malware-files/cmp %08x%08x%08x%08x%08x %s", state[0],state[1],state[2],state[3],state[4],pid); // 产⽣"123
+    sprintf(comm, "./cmp %08x%08x%08x%08x%08x %s", state[0],state[1],state[2],state[3],state[4],pid); // 产⽣"123
     system(comm);
     return 0;
 }
