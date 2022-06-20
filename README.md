@@ -1,5 +1,10 @@
 # Cloud-Native-IDS-based-on-eBPF
-### 各个文件详解
+## 各目录
+    /wyx                     #针对挖矿病毒的系统调用序列检测
+    /dhz                     #监测容器行为和rootkit检测
+    /dss                     #生成系统调用序列bpftrace脚本的工具
+    /log                     #记录检测系统的输出
+### 各文件详解
     run.sh                  #运行整个系统的脚本
     runbpf.sh               #运行所有bpftrace的编写程序的脚本
     installbpf.sh           #检查并安装bpftrace的脚本

@@ -1,10 +1,2 @@
 Attaching 5 probes...
-4026531836  
-PIDNS        CONTAINER PPID   PID    COMM     ARGS
-
-
-
-@hostpidns: 4026531836
-
-@hosttask: -124811466598592
-
+begin to trace files opened in container

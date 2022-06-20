@@ -1,6 +1,3 @@
 Attaching 3 probes...
 tracing mount syscall... 
 TIME     EVENT                    PID    dev_name           dir_name          
-
-
-

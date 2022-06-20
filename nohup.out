@@ -28,3 +28,16 @@ Error opening file './wyx/container.bt': No such file or directory
 ./dhz/rootkit.bt:33:29-50: ERROR: syntax error, unexpected identifier
         if (@pre_flag==1 && $timenum>10_000000000 )  // 10s 一次
                             ~~~~~~~~~~~~~~~~~~~~~
+./network/sliver-implant-dect.bt:201-203: ERROR: tracepoint not found: syscalls:sys_enter_close_range
+./wyx/syscalls_seq.bt:125:18-28: ERROR: Casts are not supported for type: "none"
+            if((uint64)$i >=(uint64)@count[pid]){
+                          ~~~~~~~~~~
+./wyx/syscalls_seq.bt:152:21-29: ERROR: Casts are not supported for type: "none"
+            if((uint64)$i >= (uint64)@count[pid]){
+                             ~~~~~~~~
+./wyx/syscalls_seq.bt:125:18-28: ERROR: Casts are not supported for type: "none"
+            if((uint64)$i >=(uint64)@count[pid]){
+                          ~~~~~~~~~~
+./wyx/syscalls_seq.bt:152:21-29: ERROR: Casts are not supported for type: "none"
+            if((uint64)$i >= (uint64)@count[pid]){
+                             ~~~~~~~~

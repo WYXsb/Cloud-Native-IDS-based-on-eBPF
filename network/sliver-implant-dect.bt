@@ -1,7 +1,46 @@
+#include<asm/signal.h>
+
+#ifndef BPFTRACE_HAVE_BTF
+#include <linux/socket.h>
+#include <linux/module.h>
+#include <net/sock.h>
+#else
+#include <sys/socket.h>
+#endif
 
 BEGIN
 {
-	printf("Tracing mining malware ... Hit Ctrl-C to end.\n");
+	printf("Tracing sliver implant... Hit Ctrl-C to end.\n");
+	printf("%-9s %-20s %-10s %-10s\n", "TIME", "IMPLANT", "PID", "TID");
+}
+
+kprobe:tcp_connect
+{
+  
+  $sk = ((struct sock *) arg0);
+  $inet_family = $sk->__sk_common.skc_family;
+
+  if ($inet_family == AF_INET || $inet_family == AF_INET6) {
+    if ($inet_family == AF_INET) {
+      $daddr = ntop($sk->__sk_common.skc_daddr);
+    } else {
+      $daddr = ntop($sk->__sk_common.skc_v6_daddr.in6_u.u6_addr8);
+    }
+    $lport = $sk->__sk_common.skc_num;
+    $dport = $sk->__sk_common.skc_dport;
+
+    // Destination port is big endian, it must be flipped
+    $dport = ($dport >> 8) | (($dport << 8) & 0x00FF00);
+	
+    if(@find_sliver[pid,tid]==1 && @is_exist[pid,$daddr] == 0)
+    {
+        @is_exist[pid,$daddr] = 1;
+        //@ip_v4[pid,@count[pid]] = $daddr;
+        //system("echo %s >> ./iptable",$daddr);
+        system("iptables -A INPUT -p tcp  -s %s -j DROP",$daddr);
+        @count[pid]= @count[pid] + 1;
+    }
+ }
 }
 
 tracepoint:syscalls:sys_enter_accept
@@ -41,7 +80,14 @@ tracepoint:syscalls:sys_enter_alarm
 
 tracepoint:syscalls:sys_enter_arch_prctl
 {
-	@states[pid,tid]=0;
+	if(@states[pid,tid]==0)
+	{
+		@states[pid,tid]=1;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_bind
@@ -116,10 +162,20 @@ tracepoint:syscalls:sys_enter_clock_settime
 
 tracepoint:syscalls:sys_enter_clone
 {
-	if(@states[pid,tid]==24)
+	if(@states[pid,tid]==11)
 	{
-		printf("find malware %d!!!\n",pid);system("kill %d",pid);
+		/*$i=0;
+		while($i<100) {
+			if((uint64)$i >= (uint64)@count[pid]){
+				break;
+			}
+			
+			system("echo %s >> ./iptable",@ip_v4[pid,$i]);	
+			$i = $i + 1;
+		}*/
+		time("%H:%M:%S  ");printf("%-20s %-10d %-10d\n",comm,pid,tid);
 		@states[pid,tid]=0;
+		@find_sliver[pid,tid]=1;
 	}
 	else
 	{
@@ -134,16 +190,16 @@ tracepoint:syscalls:sys_enter_clone3
 
 tracepoint:syscalls:sys_enter_close
 {
-	if(@states[pid,tid]==9)
+	if(@states[pid,tid]==4)
 	{
-		printf("find mining malware %d!!!\n",pid);system("kill %d",pid);
-		@states[pid,tid]=0;
+		@states[pid,tid]=5;
 	}
 	else
 	{
 		@states[pid,tid]=0;
 	}
 }
+
 
 tracepoint:syscalls:sys_enter_connect
 {
@@ -192,32 +248,15 @@ tracepoint:syscalls:sys_enter_epoll_create1
 
 tracepoint:syscalls:sys_enter_epoll_ctl
 {
-	if(@states[pid,tid]==15 && (args->op == 1))
-	{
-		@states[pid,tid]=16;
-	}
-	else if(@states[pid,tid]==12 && (args->op == 1))
-	{
-		@states[pid,tid]=13;
-	}
-	else if(@states[pid,tid]==1 && (args->op == 2))
-	{
-		@states[pid,tid]=11;
-	}
-	else if(@states[pid,tid]==0 && (args->op == 1))
-	{
-		@states[pid,tid]=1;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_epoll_pwait
 {
 	@states[pid,tid]=0;
 }
+
+
 
 tracepoint:syscalls:sys_enter_epoll_wait
 {
@@ -258,6 +297,7 @@ tracepoint:syscalls:sys_enter_faccessat
 {
 	@states[pid,tid]=0;
 }
+
 
 tracepoint:syscalls:sys_enter_fadvise64
 {
@@ -306,46 +346,7 @@ tracepoint:syscalls:sys_enter_fchownat
 
 tracepoint:syscalls:sys_enter_fcntl
 {
-	if(@states[pid,tid]==21 && (args->cmd == 0x4 && args->arg==0x1))
-	{
-		@states[pid,tid]=22;
-	}
-	else if(@states[pid,tid]==20 && (args->cmd == 0x3 && args->arg==0))
-	{
-		@states[pid,tid]=21;
-	}
-	else if(@states[pid,tid]==19 && (args->cmd == 0x4 && args->arg==0x1))
-	{
-		@states[pid,tid]=20;
-	}
-	else if(@states[pid,tid]==18 && (args->cmd == 0x3 && args->arg==0))
-	{
-		@states[pid,tid]=19;
-	}
-	else if(@states[pid,tid]==17 && (args->cmd == 0x4 && args->arg==0x801))
-	{
-		@states[pid,tid]=18;
-	}
-	else if(@states[pid,tid]==16 && (args->cmd == 0x3 && args->arg==0))
-	{
-		@states[pid,tid]=17;
-	}
-	else if(@states[pid,tid]==14 && (args->cmd == 0x4 && args->arg==0x800))
-	{
-		@states[pid,tid]=15;
-	}
-	else if(@states[pid,tid]==13 && (args->cmd == 0x3 && args->arg==0))
-	{
-		@states[pid,tid]=14;
-	}
-	else if(@states[pid,tid]==5)
-	{
-		@states[pid,tid]=6;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_fdatasync
@@ -505,14 +506,7 @@ tracepoint:syscalls:sys_enter_getpgrp
 
 tracepoint:syscalls:sys_enter_getpid
 {
-	if(@states[pid,tid]==23)
-	{
-		@states[pid,tid]=24;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_getppid
@@ -567,7 +561,14 @@ tracepoint:syscalls:sys_enter_getsockopt
 
 tracepoint:syscalls:sys_enter_gettid
 {
-	@states[pid,tid]=0;
+	if(@states[pid,tid]==9)
+	{
+		@states[pid,tid]=10;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_gettimeofday
@@ -705,6 +706,8 @@ tracepoint:syscalls:sys_enter_kill
 	@states[pid,tid]=0;
 }
 
+
+
 tracepoint:syscalls:sys_enter_lchown
 {
 	@states[pid,tid]=0;
@@ -736,11 +739,6 @@ tracepoint:syscalls:sys_enter_listxattr
 }
 
 tracepoint:syscalls:sys_enter_llistxattr
-{
-	@states[pid,tid]=0;
-}
-
-tracepoint:syscalls:sys_enter_lookup_dcookie
 {
 	@states[pid,tid]=0;
 }
@@ -827,7 +825,14 @@ tracepoint:syscalls:sys_enter_mlockall
 
 tracepoint:syscalls:sys_enter_mmap
 {
-	@states[pid,tid]=0;
+	if(@states[pid,tid]==5)
+	{
+		@states[pid,tid]=5;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_modify_ldt
@@ -839,6 +844,8 @@ tracepoint:syscalls:sys_enter_mount
 {
 	@states[pid,tid]=0;
 }
+
+
 
 tracepoint:syscalls:sys_enter_move_mount
 {
@@ -935,16 +942,14 @@ tracepoint:syscalls:sys_enter_name_to_handle_at
 	@states[pid,tid]=0;
 }
 
+tracepoint:syscalls:sys_enter_nanosleep
+{
+	@states[pid,tid]=0;
+}
+
 tracepoint:syscalls:sys_enter_newfstat
 {
-	if(@states[pid,tid]==6)
-	{
-		@states[pid,tid]=7;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_newfstatat
@@ -964,14 +969,7 @@ tracepoint:syscalls:sys_enter_newstat
 
 tracepoint:syscalls:sys_enter_newuname
 {
-	if(@states[pid,tid]==0)
-	{
-		@states[pid,tid]=2;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_open
@@ -991,19 +989,17 @@ tracepoint:syscalls:sys_enter_open_tree
 
 tracepoint:syscalls:sys_enter_openat
 {
-	if(@states[pid,tid]==4)
+	if(@states[pid,tid]==2)
 	{
-		@states[pid,tid]=5;
-	}
-	else if(@states[pid,tid]==3)
-	{
-		@states[pid,tid]=4;
+		@states[pid,tid]=3;
 	}
 	else
 	{
 		@states[pid,tid]=0;
 	}
 }
+
+
 
 tracepoint:syscalls:sys_enter_pause
 {
@@ -1019,6 +1015,7 @@ tracepoint:syscalls:sys_enter_personality
 {
 	@states[pid,tid]=0;
 }
+
 
 tracepoint:syscalls:sys_enter_pidfd_open
 {
@@ -1037,18 +1034,7 @@ tracepoint:syscalls:sys_enter_pipe
 
 tracepoint:syscalls:sys_enter_pipe2
 {
-	if(@states[pid,tid]==22)
-	{
-		@states[pid,tid]=23;
-	}
-	else if(@states[pid,tid]==11)
-	{
-		@states[pid,tid]=12;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_pivot_root
@@ -1106,6 +1092,7 @@ tracepoint:syscalls:sys_enter_prlimit64
 	@states[pid,tid]=0;
 }
 
+
 tracepoint:syscalls:sys_enter_process_vm_readv
 {
 	@states[pid,tid]=0;
@@ -1148,13 +1135,9 @@ tracepoint:syscalls:sys_enter_quotactl
 
 tracepoint:syscalls:sys_enter_read
 {
-	if(@states[pid,tid]==8)
+	if(@states[pid,tid]==3)
 	{
-		@states[pid,tid]=9;
-	}
-	else if(@states[pid,tid]==7)
-	{
-		@states[pid,tid]=8;
+		@states[pid,tid]=4;
 	}
 	else
 	{
@@ -1247,9 +1230,41 @@ tracepoint:syscalls:sys_enter_rseq
 	@states[pid,tid]=0;
 }
 
+tracepoint:syscalls:sys_enter_rt_sigaction
+{
+	if(@states[pid,tid]==10)
+	{
+		@states[pid,tid]=10;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
+}
+
 tracepoint:syscalls:sys_enter_rt_sigpending
 {
 	@states[pid,tid]=0;
+}
+
+tracepoint:syscalls:sys_enter_rt_sigprocmask
+{
+	if(@states[pid,tid]==10)
+	{
+		@states[pid,tid]=11;
+	}
+	else if(@states[pid,tid]==8)
+	{
+		@states[pid,tid]=9;
+	}
+	else if(@states[pid,tid]==5)
+	{
+		@states[pid,tid]=6;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_rt_sigqueueinfo
@@ -1289,7 +1304,14 @@ tracepoint:syscalls:sys_enter_sched_get_priority_min
 
 tracepoint:syscalls:sys_enter_sched_getaffinity
 {
-	@states[pid,tid]=0;
+	if(@states[pid,tid]==1)
+	{
+		@states[pid,tid]=2;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_sched_getattr
@@ -1529,7 +1551,18 @@ tracepoint:syscalls:sys_enter_shutdown
 
 tracepoint:syscalls:sys_enter_sigaltstack
 {
-	@states[pid,tid]=0;
+	if(@states[pid,tid]==7)
+	{
+		@states[pid,tid]=8;
+	}
+	else if(@states[pid,tid]==6)
+	{
+		@states[pid,tid]=7;
+	}
+	else
+	{
+		@states[pid,tid]=0;
+	}
 }
 
 tracepoint:syscalls:sys_enter_signalfd
@@ -1602,11 +1635,6 @@ tracepoint:syscalls:sys_enter_syncfs
 	@states[pid,tid]=0;
 }
 
-tracepoint:syscalls:sys_enter_sysctl
-{
-	@states[pid,tid]=0;
-}
-
 tracepoint:syscalls:sys_enter_sysfs
 {
 	@states[pid,tid]=0;
@@ -1634,14 +1662,7 @@ tracepoint:syscalls:sys_enter_tgkill
 
 tracepoint:syscalls:sys_enter_time
 {
-	if(@states[pid,tid]==2)
-	{
-		@states[pid,tid]=3;
-	}
-	else
-	{
-		@states[pid,tid]=0;
-	}
+	@states[pid,tid]=0;
 }
 
 tracepoint:syscalls:sys_enter_timer_create
@@ -2113,9 +2134,19 @@ tracepoint:syscalls:sys_enter_writev
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 END
 {
-	printf("Tracing kinsing  end.\n");
+	printf("Tracing sliver implant end.\n");
 }
-
 
