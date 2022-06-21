@@ -11,20 +11,22 @@
 BEGIN
 {
 	printf("Tracing sliver implant... Hit Ctrl-C to end.\n");
-	printf("%-9s %-20s %-10s %-10s\n", "TIME", "IMPLANT", "PID", "TID");
+	printf("%-9s %-20s %-10s %-10s ", "TIME", "IMPLANT", "PID", "TID");
+	printf("%-20s %-6s %-20s %-6s\n","SADDR", "SPORT", "DADDR", "DPORT");
 }
 
 kprobe:tcp_connect
 {
-  
   $sk = ((struct sock *) arg0);
   $inet_family = $sk->__sk_common.skc_family;
 
   if ($inet_family == AF_INET || $inet_family == AF_INET6) {
     if ($inet_family == AF_INET) {
       $daddr = ntop($sk->__sk_common.skc_daddr);
+      $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
     } else {
       $daddr = ntop($sk->__sk_common.skc_v6_daddr.in6_u.u6_addr8);
+      $saddr = ntop($sk->__sk_common.skc_v6_rcv_saddr.in6_u.u6_addr8);
     }
     $lport = $sk->__sk_common.skc_num;
     $dport = $sk->__sk_common.skc_dport;
@@ -35,10 +37,8 @@ kprobe:tcp_connect
     if(@find_sliver[pid,tid]==1 && @is_exist[pid,$daddr] == 0)
     {
         @is_exist[pid,$daddr] = 1;
-        //@ip_v4[pid,@count[pid]] = $daddr;
-        //system("echo %s >> ./iptable",$daddr);
         system("iptables -A INPUT -p tcp  -s %s -j DROP",$daddr);
-        @count[pid]= @count[pid] + 1;
+        printf("%-20s %-6d %-20s %-6d\n",$saddr,$lport,$daddr,$dport);
     }
  }
 }
@@ -162,18 +162,9 @@ tracepoint:syscalls:sys_enter_clock_settime
 
 tracepoint:syscalls:sys_enter_clone
 {
-	if(@states[pid,tid]==11)
+	if(@find_sliver[pid,tid]==0 && @states[pid,tid]==11)
 	{
-		/*$i=0;
-		while($i<100) {
-			if((uint64)$i >= (uint64)@count[pid]){
-				break;
-			}
-			
-			system("echo %s >> ./iptable",@ip_v4[pid,$i]);	
-			$i = $i + 1;
-		}*/
-		time("%H:%M:%S  ");printf("%-20s %-10d %-10d\n",comm,pid,tid);
+		time("%H:%M:%S  ");printf("%-20s %-10d %-10d ",comm,pid,tid);
 		@states[pid,tid]=0;
 		@find_sliver[pid,tid]=1;
 	}
@@ -257,7 +248,6 @@ tracepoint:syscalls:sys_enter_epoll_pwait
 }
 
 
-
 tracepoint:syscalls:sys_enter_epoll_wait
 {
 	@states[pid,tid]=0;
@@ -297,6 +287,7 @@ tracepoint:syscalls:sys_enter_faccessat
 {
 	@states[pid,tid]=0;
 }
+
 
 
 tracepoint:syscalls:sys_enter_fadvise64
@@ -707,7 +698,6 @@ tracepoint:syscalls:sys_enter_kill
 }
 
 
-
 tracepoint:syscalls:sys_enter_lchown
 {
 	@states[pid,tid]=0;
@@ -844,7 +834,6 @@ tracepoint:syscalls:sys_enter_mount
 {
 	@states[pid,tid]=0;
 }
-
 
 
 tracepoint:syscalls:sys_enter_move_mount
@@ -1017,6 +1006,7 @@ tracepoint:syscalls:sys_enter_personality
 }
 
 
+
 tracepoint:syscalls:sys_enter_pidfd_open
 {
 	@states[pid,tid]=0;
@@ -1091,6 +1081,7 @@ tracepoint:syscalls:sys_enter_prlimit64
 {
 	@states[pid,tid]=0;
 }
+
 
 
 tracepoint:syscalls:sys_enter_process_vm_readv

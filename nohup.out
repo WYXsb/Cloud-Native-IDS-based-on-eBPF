@@ -41,3 +41,11 @@ Error opening file './wyx/container.bt': No such file or directory
 ./wyx/syscalls_seq.bt:152:21-29: ERROR: Casts are not supported for type: "none"
             if((uint64)$i >= (uint64)@count[pid]){
                              ~~~~~~~~
+./runbpf.sh: 27: ./runbpf.sh: cannot create ./log/sliver.log: Permission denied
+./runbpf.sh: 24: ./runbpf.sh: cannot create ./log/rootkit.log: Permission denied
+./runbpf.sh: 20: ./runbpf.sh: cannot create ./log/cont_shell.log: Permission denied
+./runbpf.sh: 16: ./runbpf.sh: cannot create ./log/cont_mount.log: Permission denied
+./runbpf.sh: 12: ./runbpf.sh: cannot create ./log/cont_exec.log: Permission denied
+./runbpf.sh: 8: ./runbpf.sh: cannot create ./log/syscalls_seq.log: Permission denied
+./runbpf.sh: 4: ./runbpf.sh: cannot create ./log/cont_openfiles.log: Permission denied
+./network/sliver-implant-dect.bt:192-194: ERROR: tracepoint not found: syscalls:sys_enter_close_range
