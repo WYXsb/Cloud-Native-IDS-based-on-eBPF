@@ -1,3 +1,6 @@
 [submodule "dss"]
 	path = dss
 	url = https://github.com/csc010228/detect_syscall_sequence.git
+[submodule "HIDS-eBPF"]
+	path = HIDS-eBPF
+	url = https://github.com/haozhuoD/HIDS-eBPF.git
