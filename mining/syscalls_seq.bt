@@ -740,11 +740,6 @@ tracepoint:syscalls:sys_enter_llistxattr
 	@states[pid,tid]=0;
 }
 
-tracepoint:syscalls:sys_enter_lookup_dcookie
-{
-	@states[pid,tid]=0;
-}
-
 tracepoint:syscalls:sys_enter_lremovexattr
 {
 	@states[pid,tid]=0;
@@ -1598,11 +1593,6 @@ tracepoint:syscalls:sys_enter_sync_file_range
 }
 
 tracepoint:syscalls:sys_enter_syncfs
-{
-	@states[pid,tid]=0;
-}
-
-tracepoint:syscalls:sys_enter_sysctl
 {
 	@states[pid,tid]=0;
 }

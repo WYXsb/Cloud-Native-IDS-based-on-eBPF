@@ -2,8 +2,6 @@ Attaching 5 probes...
 begin to trace files opened in container
 
 
-
+@filename[61049]: 140731689246176
 @hostpidns: 4026531836
-
-@hosttask: -110126251063872
-
+@hosttask: -110793857951488

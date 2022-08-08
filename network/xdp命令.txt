@@ -1,0 +1,3 @@
+编译：sudo clang -O2 -target bpf -c xdp.c -o xdp.o
+加载程序到指定网卡（如：lo）：sudo ip link set dev lo xdp obj xdp.o sec mysection
+卸载网卡上的XDP程序：sudo sudo ip link set dev lo xdp off

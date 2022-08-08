@@ -1,51 +1,284 @@
-./runbpf.sh: 3: ./runbpf.sh: {: not found
-ERROR: bpftrace currently only supports running as the root user.
-./runbpf.sh: 5: ./runbpf.sh: Syntax error: "}" unexpected
-./run.sh: 1: ./run.sh: ./installbpf.sh: not found
-./run.sh: 2: ./run.sh: : not found
-./runbpf.sh: 3: ./runbpf.sh: {: not found
-ERROR: bpftrace currently only supports running as the root user.
-./runbpf.sh: 5: ./runbpf.sh: Syntax error: "}" unexpected
-ERROR: bpftrace currently only supports running as the root user.
-Error opening file './dhz/rootkit.bt': No such file or directory
-ERROR: bpftrace currently only supports running as the root user.
-ERROR: bpftrace currently only supports running as the root user.
-Error opening file './wyx/syscalls_seq.bt': No such file or directory
-ERROR: bpftrace currently only supports running as the root user.
-Error opening file './dhz/rootkit.bt': No such file or directory
-ERROR: bpftrace currently only supports running as the root user.
-ERROR: bpftrace currently only supports running as the root user.
-ERROR: bpftrace currently only supports running as the root user.
-ERROR: bpftrace currently only supports running as the root user.Error opening file './wyx/syscalls_seq.bt': No such file or directory
-
-Error opening file './dhz/rootkit.bt': No such file or directory
-Error opening file './wyx/syscalls_seq.bt': No such file or directory
-./dhz/rootkit.bt:33:29-50: ERROR: syntax error, unexpected identifier
-        if (@pre_flag==1 && $timenum>10_000000000 )  // 10s 一次
-                            ~~~~~~~~~~~~~~~~~~~~~
-Error opening file './wyx/syscalls_seq.bt': No such file or directory
-Error opening file './wyx/container.bt': No such file or directory
-./dhz/rootkit.bt:33:29-50: ERROR: syntax error, unexpected identifier
-        if (@pre_flag==1 && $timenum>10_000000000 )  // 10s 一次
-                            ~~~~~~~~~~~~~~~~~~~~~
-./network/sliver-implant-dect.bt:201-203: ERROR: tracepoint not found: syscalls:sys_enter_close_range
-./wyx/syscalls_seq.bt:125:18-28: ERROR: Casts are not supported for type: "none"
-            if((uint64)$i >=(uint64)@count[pid]){
-                          ~~~~~~~~~~
-./wyx/syscalls_seq.bt:152:21-29: ERROR: Casts are not supported for type: "none"
-            if((uint64)$i >= (uint64)@count[pid]){
-                             ~~~~~~~~
-./wyx/syscalls_seq.bt:125:18-28: ERROR: Casts are not supported for type: "none"
-            if((uint64)$i >=(uint64)@count[pid]){
-                          ~~~~~~~~~~
-./wyx/syscalls_seq.bt:152:21-29: ERROR: Casts are not supported for type: "none"
-            if((uint64)$i >= (uint64)@count[pid]){
-                             ~~~~~~~~
-./runbpf.sh: 27: ./runbpf.sh: cannot create ./log/sliver.log: Permission denied
-./runbpf.sh: 24: ./runbpf.sh: cannot create ./log/rootkit.log: Permission denied
-./runbpf.sh: 20: ./runbpf.sh: cannot create ./log/cont_shell.log: Permission denied
-./runbpf.sh: 16: ./runbpf.sh: cannot create ./log/cont_mount.log: Permission denied
-./runbpf.sh: 12: ./runbpf.sh: cannot create ./log/cont_exec.log: Permission denied
-./runbpf.sh: 8: ./runbpf.sh: cannot create ./log/syscalls_seq.log: Permission denied
-./runbpf.sh: 4: ./runbpf.sh: cannot create ./log/cont_openfiles.log: Permission denied
-./network/sliver-implant-dect.bt:192-194: ERROR: tracepoint not found: syscalls:sys_enter_close_range
+libbpf: loading object 'hids_bpf' from buffer
+libbpf: elf: section(2) tp/syscalls/sys_exit_finit_module, size 856, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_exit_finit_module': found program 'check_syscall_table' at insn offset 0 (0 bytes), code size 107 insns (856 bytes)
+libbpf: elf: section(3) tp/syscalls/sys_enter_mount, size 512, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_enter_mount': found program 'mount_enter' at insn offset 0 (0 bytes), code size 64 insns (512 bytes)
+libbpf: elf: section(4) tp/syscalls/sys_exit_mount, size 840, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_exit_mount': found program 'mount_exit' at insn offset 0 (0 bytes), code size 105 insns (840 bytes)
+libbpf: elf: section(5) tp/syscalls/sys_enter_open, size 288, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_enter_open': found program 'open_enter' at insn offset 0 (0 bytes), code size 36 insns (288 bytes)
+libbpf: elf: section(6) tp/syscalls/sys_enter_openat, size 288, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_enter_openat': found program 'openat_enter' at insn offset 0 (0 bytes), code size 36 insns (288 bytes)
+libbpf: elf: section(7) tp/syscalls/sys_exit_open, size 864, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_exit_open': found program 'open_exit' at insn offset 0 (0 bytes), code size 108 insns (864 bytes)
+libbpf: elf: section(8) tp/syscalls/sys_exit_openat, size 864, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_exit_openat': found program 'openat_exit' at insn offset 0 (0 bytes), code size 108 insns (864 bytes)
+libbpf: elf: section(9) tp/syscalls/sys_enter_execve, size 1152, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_enter_execve': found program 'execve_enter' at insn offset 0 (0 bytes), code size 144 insns (1152 bytes)
+libbpf: elf: section(10) tp/syscalls/sys_enter_execveat, size 1152, link 0, flags 6, type=1
+libbpf: sec 'tp/syscalls/sys_enter_execveat': found program 'execveat_enter' at insn offset 0 (0 bytes), code size 144 insns (1152 bytes)
+libbpf: elf: section(11) license, size 13, link 0, flags 3, type=1
+libbpf: license of hids_bpf is Dual BSD/GPL
+libbpf: elf: section(12) .maps, size 144, link 0, flags 3, type=1
+libbpf: elf: section(13) .data, size 64, link 0, flags 3, type=1
+libbpf: elf: section(14) .rodata, size 559, link 0, flags 2, type=1
+libbpf: elf: section(15) .BTF, size 31851, link 0, flags 0, type=1
+libbpf: elf: section(16) .BTF.ext, size 5604, link 0, flags 0, type=1
+libbpf: elf: section(17) .symtab, size 1320, link 30, flags 0, type=2
+libbpf: elf: section(18) .reltp/syscalls/sys_exit_finit_module, size 96, link 17, flags 0, type=9
+libbpf: elf: section(19) .reltp/syscalls/sys_enter_mount, size 32, link 17, flags 0, type=9
+libbpf: elf: section(20) .reltp/syscalls/sys_exit_mount, size 80, link 17, flags 0, type=9
+libbpf: elf: section(21) .reltp/syscalls/sys_enter_open, size 16, link 17, flags 0, type=9
+libbpf: elf: section(22) .reltp/syscalls/sys_enter_openat, size 16, link 17, flags 0, type=9
+libbpf: elf: section(23) .reltp/syscalls/sys_exit_open, size 48, link 17, flags 0, type=9
+libbpf: elf: section(24) .reltp/syscalls/sys_exit_openat, size 48, link 17, flags 0, type=9
+libbpf: elf: section(25) .reltp/syscalls/sys_enter_execve, size 64, link 17, flags 0, type=9
+libbpf: elf: section(26) .reltp/syscalls/sys_enter_execveat, size 64, link 17, flags 0, type=9
+libbpf: looking for externs among 55 symbols...
+libbpf: collected 0 externs total
+libbpf: map 'ksymbols_map': at sec_idx 12, offset 0.
+libbpf: map 'ksymbols_map': found type = 1.
+libbpf: map 'ksymbols_map': found key [9], sz = 64.
+libbpf: map 'ksymbols_map': found value [14], sz = 8.
+libbpf: map 'ksymbols_map': found max_entries = 1024.
+libbpf: map 'syscall_addrs': at sec_idx 12, offset 32.
+libbpf: map 'syscall_addrs': found type = 1.
+libbpf: map 'syscall_addrs': found key [22], sz = 4.
+libbpf: map 'syscall_addrs': found value [14], sz = 8.
+libbpf: map 'syscall_addrs': found max_entries = 512.
+libbpf: map 'rb': at sec_idx 12, offset 64.
+libbpf: map 'rb': found type = 27.
+libbpf: map 'rb': found max_entries = 262144.
+libbpf: map 'mount_map': at sec_idx 12, offset 80.
+libbpf: map 'mount_map': found type = 1.
+libbpf: map 'mount_map': found key [22], sz = 4.
+libbpf: map 'mount_map': found value [36], sz = 256.
+libbpf: map 'mount_map': found max_entries = 4096.
+libbpf: map 'open_map': at sec_idx 12, offset 112.
+libbpf: map 'open_map': found type = 1.
+libbpf: map 'open_map': found key [22], sz = 4.
+libbpf: map 'open_map': found value [42], sz = 128.
+libbpf: map 'open_map': found max_entries = 4096.
+libbpf: map 'hids_bpf.data' (global data): at sec_idx 13, offset 0, flags 400.
+libbpf: map 5 is "hids_bpf.data"
+libbpf: map 'hids_bpf.rodata' (global data): at sec_idx 14, offset 0, flags 480.
+libbpf: map 6 is "hids_bpf.rodata"
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': collecting relocation for section(2) 'tp/syscalls/sys_exit_finit_module'
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #0: insn #2 against 'ksymbols_map'
+libbpf: prog 'check_syscall_table': found map 0 (ksymbols_map, sec 12, off 0) for insn #2
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #1: insn #4 against '.data'
+libbpf: prog 'check_syscall_table': found data map 5 (hids_bpf.data, sec 13, off 0) for insn 4
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #2: insn #9 against '.rodata'
+libbpf: prog 'check_syscall_table': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 9
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #3: insn #15 against '.rodata'
+libbpf: prog 'check_syscall_table': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 15
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #4: insn #36 against 'syscall_addrs'
+libbpf: prog 'check_syscall_table': found map 1 (syscall_addrs, sec 12, off 32) for insn #36
+libbpf: sec '.reltp/syscalls/sys_exit_finit_module': relo #5: insn #44 against 'rb'
+libbpf: prog 'check_syscall_table': found map 2 (rb, sec 12, off 64) for insn #44
+libbpf: sec '.reltp/syscalls/sys_enter_mount': collecting relocation for section(3) 'tp/syscalls/sys_enter_mount'
+libbpf: sec '.reltp/syscalls/sys_enter_mount': relo #0: insn #49 against '.rodata'
+libbpf: prog 'mount_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 49
+libbpf: sec '.reltp/syscalls/sys_enter_mount': relo #1: insn #57 against 'mount_map'
+libbpf: prog 'mount_enter': found map 3 (mount_map, sec 12, off 80) for insn #57
+libbpf: sec '.reltp/syscalls/sys_exit_mount': collecting relocation for section(4) 'tp/syscalls/sys_exit_mount'
+libbpf: sec '.reltp/syscalls/sys_exit_mount': relo #0: insn #9 against 'mount_map'
+libbpf: prog 'mount_exit': found map 3 (mount_map, sec 12, off 80) for insn #9
+libbpf: sec '.reltp/syscalls/sys_exit_mount': relo #1: insn #14 against '.rodata'
+libbpf: prog 'mount_exit': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 14
+libbpf: sec '.reltp/syscalls/sys_exit_mount': relo #2: insn #21 against '.rodata'
+libbpf: prog 'mount_exit': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 21
+libbpf: sec '.reltp/syscalls/sys_exit_mount': relo #3: insn #27 against 'rb'
+libbpf: prog 'mount_exit': found map 2 (rb, sec 12, off 64) for insn #27
+libbpf: sec '.reltp/syscalls/sys_exit_mount': relo #4: insn #94 against '.rodata'
+libbpf: prog 'mount_exit': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 94
+libbpf: sec '.reltp/syscalls/sys_enter_open': collecting relocation for section(5) 'tp/syscalls/sys_enter_open'
+libbpf: sec '.reltp/syscalls/sys_enter_open': relo #0: insn #29 against 'open_map'
+libbpf: prog 'open_enter': found map 4 (open_map, sec 12, off 112) for insn #29
+libbpf: sec '.reltp/syscalls/sys_enter_openat': collecting relocation for section(6) 'tp/syscalls/sys_enter_openat'
+libbpf: sec '.reltp/syscalls/sys_enter_openat': relo #0: insn #29 against 'open_map'
+libbpf: prog 'openat_enter': found map 4 (open_map, sec 12, off 112) for insn #29
+libbpf: sec '.reltp/syscalls/sys_exit_open': collecting relocation for section(7) 'tp/syscalls/sys_exit_open'
+libbpf: sec '.reltp/syscalls/sys_exit_open': relo #0: insn #9 against 'open_map'
+libbpf: prog 'open_exit': found map 4 (open_map, sec 12, off 112) for insn #9
+libbpf: sec '.reltp/syscalls/sys_exit_open': relo #1: insn #14 against '.rodata'
+libbpf: prog 'open_exit': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 14
+libbpf: sec '.reltp/syscalls/sys_exit_open': relo #2: insn #19 against 'rb'
+libbpf: prog 'open_exit': found map 2 (rb, sec 12, off 64) for insn #19
+libbpf: sec '.reltp/syscalls/sys_exit_openat': collecting relocation for section(8) 'tp/syscalls/sys_exit_openat'
+libbpf: sec '.reltp/syscalls/sys_exit_openat': relo #0: insn #9 against 'open_map'
+libbpf: prog 'openat_exit': found map 4 (open_map, sec 12, off 112) for insn #9
+libbpf: sec '.reltp/syscalls/sys_exit_openat': relo #1: insn #14 against '.rodata'
+libbpf: prog 'openat_exit': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 14
+libbpf: sec '.reltp/syscalls/sys_exit_openat': relo #2: insn #19 against 'rb'
+libbpf: prog 'openat_exit': found map 2 (rb, sec 12, off 64) for insn #19
+libbpf: sec '.reltp/syscalls/sys_enter_execve': collecting relocation for section(9) 'tp/syscalls/sys_enter_execve'
+libbpf: sec '.reltp/syscalls/sys_enter_execve': relo #0: insn #5 against 'rb'
+libbpf: prog 'execve_enter': found map 2 (rb, sec 12, off 64) for insn #5
+libbpf: sec '.reltp/syscalls/sys_enter_execve': relo #1: insn #68 against '.rodata'
+libbpf: prog 'execve_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 68
+libbpf: sec '.reltp/syscalls/sys_enter_execve': relo #2: insn #99 against '.rodata'
+libbpf: prog 'execve_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 99
+libbpf: sec '.reltp/syscalls/sys_enter_execve': relo #3: insn #135 against '.rodata'
+libbpf: prog 'execve_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 135
+libbpf: sec '.reltp/syscalls/sys_enter_execveat': collecting relocation for section(10) 'tp/syscalls/sys_enter_execveat'
+libbpf: sec '.reltp/syscalls/sys_enter_execveat': relo #0: insn #5 against 'rb'
+libbpf: prog 'execveat_enter': found map 2 (rb, sec 12, off 64) for insn #5
+libbpf: sec '.reltp/syscalls/sys_enter_execveat': relo #1: insn #68 against '.rodata'
+libbpf: prog 'execveat_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 68
+libbpf: sec '.reltp/syscalls/sys_enter_execveat': relo #2: insn #99 against '.rodata'
+libbpf: prog 'execveat_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 99
+libbpf: sec '.reltp/syscalls/sys_enter_execveat': relo #3: insn #135 against '.rodata'
+libbpf: prog 'execveat_enter': found data map 6 (hids_bpf.rodata, sec 14, off 0) for insn 135
+libbpf: loading kernel BTF '/sys/kernel/btf/vmlinux': 0
+libbpf: map 'ksymbols_map': created successfully, fd=4
+libbpf: map 'syscall_addrs': created successfully, fd=5
+libbpf: map 'rb': created successfully, fd=6
+libbpf: map 'mount_map': created successfully, fd=7
+libbpf: map 'open_map': created successfully, fd=8
+libbpf: map 'hids_bpf.data': created successfully, fd=9
+libbpf: map 'hids_bpf.rodata': created successfully, fd=10
+libbpf: sec 'tp/syscalls/sys_exit_finit_module': found 5 CO-RE relocations
+libbpf: CO-RE relocating [47] struct task_struct: found target candidate [172] struct task_struct in [vmlinux]
+libbpf: prog 'check_syscall_table': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'check_syscall_table': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'check_syscall_table': relo #0: patched insn #59 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'check_syscall_table': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'check_syscall_table': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'check_syscall_table': relo #1: patched insn #66 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'check_syscall_table': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'check_syscall_table': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'check_syscall_table': relo #2: patched insn #79 (ALU/ALU64) imm 1672 -> 2944
+libbpf: CO-RE relocating [318] struct nsproxy: found target candidate [1948] struct nsproxy in [vmlinux]
+libbpf: prog 'check_syscall_table': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'check_syscall_table': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'check_syscall_table': relo #3: patched insn #87 (ALU/ALU64) imm 32 -> 32
+libbpf: CO-RE relocating [325] struct pid_namespace: found target candidate [1929] struct pid_namespace in [vmlinux]
+libbpf: prog 'check_syscall_table': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'check_syscall_table': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'check_syscall_table': relo #4: patched insn #93 (ALU/ALU64) imm 136 -> 128
+libbpf: sec 'tp/syscalls/sys_exit_mount': found 5 CO-RE relocations
+libbpf: prog 'mount_exit': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'mount_exit': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'mount_exit': relo #0: patched insn #38 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'mount_exit': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'mount_exit': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'mount_exit': relo #1: patched insn #45 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'mount_exit': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'mount_exit': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'mount_exit': relo #2: patched insn #58 (ALU/ALU64) imm 1672 -> 2944
+libbpf: prog 'mount_exit': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'mount_exit': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'mount_exit': relo #3: patched insn #67 (ALU/ALU64) imm 32 -> 32
+libbpf: prog 'mount_exit': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'mount_exit': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'mount_exit': relo #4: patched insn #73 (ALU/ALU64) imm 136 -> 128
+libbpf: sec 'tp/syscalls/sys_exit_open': found 7 CO-RE relocations
+libbpf: prog 'open_exit': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'open_exit': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'open_exit': relo #0: patched insn #30 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'open_exit': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'open_exit': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'open_exit': relo #1: patched insn #37 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'open_exit': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'open_exit': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'open_exit': relo #2: patched insn #50 (ALU/ALU64) imm 1672 -> 2944
+libbpf: prog 'open_exit': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'open_exit': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'open_exit': relo #3: patched insn #58 (ALU/ALU64) imm 32 -> 32
+libbpf: prog 'open_exit': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'open_exit': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'open_exit': relo #4: patched insn #64 (ALU/ALU64) imm 136 -> 128
+libbpf: prog 'open_exit': relo #5: <byte_off> [318] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'open_exit': relo #5: matching candidate #0 <byte_off> [1948] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'open_exit': relo #5: patched insn #84 (ALU/ALU64) imm 8 -> 8
+libbpf: CO-RE relocating [357] struct uts_namespace: found target candidate [2018] struct uts_namespace in [vmlinux]
+libbpf: prog 'open_exit': relo #6: <byte_off> [357] struct uts_namespace.name.nodename (0:1:1 @ offset 69)
+libbpf: prog 'open_exit': relo #6: matching candidate #0 <byte_off> [2018] struct uts_namespace.name.nodename (0:0:1 @ offset 65)
+libbpf: prog 'open_exit': relo #6: patched insn #90 (ALU/ALU64) imm 69 -> 65
+libbpf: sec 'tp/syscalls/sys_exit_openat': found 7 CO-RE relocations
+libbpf: prog 'openat_exit': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'openat_exit': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'openat_exit': relo #0: patched insn #30 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'openat_exit': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'openat_exit': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'openat_exit': relo #1: patched insn #37 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'openat_exit': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'openat_exit': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'openat_exit': relo #2: patched insn #50 (ALU/ALU64) imm 1672 -> 2944
+libbpf: prog 'openat_exit': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'openat_exit': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'openat_exit': relo #3: patched insn #58 (ALU/ALU64) imm 32 -> 32
+libbpf: prog 'openat_exit': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'openat_exit': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'openat_exit': relo #4: patched insn #64 (ALU/ALU64) imm 136 -> 128
+libbpf: prog 'openat_exit': relo #5: <byte_off> [318] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'openat_exit': relo #5: matching candidate #0 <byte_off> [1948] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'openat_exit': relo #5: patched insn #84 (ALU/ALU64) imm 8 -> 8
+libbpf: prog 'openat_exit': relo #6: <byte_off> [357] struct uts_namespace.name.nodename (0:1:1 @ offset 69)
+libbpf: prog 'openat_exit': relo #6: matching candidate #0 <byte_off> [2018] struct uts_namespace.name.nodename (0:0:1 @ offset 65)
+libbpf: prog 'openat_exit': relo #6: patched insn #90 (ALU/ALU64) imm 69 -> 65
+libbpf: sec 'tp/syscalls/sys_enter_execve': found 10 CO-RE relocations
+libbpf: prog 'execve_enter': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'execve_enter': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'execve_enter': relo #0: patched insn #16 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'execve_enter': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'execve_enter': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'execve_enter': relo #1: patched insn #23 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'execve_enter': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'execve_enter': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'execve_enter': relo #2: patched insn #36 (ALU/ALU64) imm 1672 -> 2944
+libbpf: prog 'execve_enter': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'execve_enter': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'execve_enter': relo #3: patched insn #46 (ALU/ALU64) imm 32 -> 32
+libbpf: prog 'execve_enter': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'execve_enter': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'execve_enter': relo #4: patched insn #52 (ALU/ALU64) imm 136 -> 128
+libbpf: prog 'execve_enter': relo #5: <byte_off> [318] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'execve_enter': relo #5: matching candidate #0 <byte_off> [1948] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'execve_enter': relo #5: patched insn #79 (ALU/ALU64) imm 8 -> 8
+libbpf: prog 'execve_enter': relo #6: <byte_off> [357] struct uts_namespace.name.nodename (0:1:1 @ offset 69)
+libbpf: prog 'execve_enter': relo #6: matching candidate #0 <byte_off> [2018] struct uts_namespace.name.nodename (0:0:1 @ offset 65)
+libbpf: prog 'execve_enter': relo #6: patched insn #85 (ALU/ALU64) imm 69 -> 65
+libbpf: prog 'execve_enter': relo #7: <byte_off> [47] struct task_struct.real_cred (0:83 @ offset 1584)
+libbpf: prog 'execve_enter': relo #7: matching candidate #0 <byte_off> [172] struct task_struct.real_cred (0:105 @ offset 2832)
+libbpf: prog 'execve_enter': relo #7: patched insn #104 (ALU/ALU64) imm 1584 -> 2832
+libbpf: CO-RE relocating [366] struct cred: found target candidate [862] struct cred in [vmlinux]
+libbpf: prog 'execve_enter': relo #8: <byte_off> [366] struct cred.cap_effective.cap[0] (0:12:0:0 @ offset 56)
+libbpf: prog 'execve_enter': relo #8: matching candidate #0 <byte_off> [862] struct cred.cap_effective.cap[0] (0:12:0:0 @ offset 56)
+libbpf: prog 'execve_enter': relo #8: patched insn #111 (ALU/ALU64) imm 56 -> 56
+libbpf: prog 'execve_enter': relo #9: <byte_off> [366] struct cred.cap_effective.cap[1] (0:12:0:1 @ offset 60)
+libbpf: prog 'execve_enter': relo #9: matching candidate #0 <byte_off> [862] struct cred.cap_effective.cap[1] (0:12:0:1 @ offset 60)
+libbpf: prog 'execve_enter': relo #9: patched insn #125 (ALU/ALU64) imm 60 -> 60
+libbpf: sec 'tp/syscalls/sys_enter_execveat': found 10 CO-RE relocations
+libbpf: prog 'execveat_enter': relo #0: <byte_off> [47] struct task_struct.real_parent (0:57 @ offset 1184)
+libbpf: prog 'execveat_enter': relo #0: matching candidate #0 <byte_off> [172] struct task_struct.real_parent (0:77 @ offset 2400)
+libbpf: prog 'execveat_enter': relo #0: patched insn #16 (ALU/ALU64) imm 1184 -> 2400
+libbpf: prog 'execveat_enter': relo #1: <byte_off> [47] struct task_struct.tgid (0:55 @ offset 1172)
+libbpf: prog 'execveat_enter': relo #1: matching candidate #0 <byte_off> [172] struct task_struct.tgid (0:75 @ offset 2388)
+libbpf: prog 'execveat_enter': relo #1: patched insn #23 (ALU/ALU64) imm 1172 -> 2388
+libbpf: prog 'execveat_enter': relo #2: <byte_off> [47] struct task_struct.nsproxy (0:92 @ offset 1672)
+libbpf: prog 'execveat_enter': relo #2: matching candidate #0 <byte_off> [172] struct task_struct.nsproxy (0:117 @ offset 2944)
+libbpf: prog 'execveat_enter': relo #2: patched insn #36 (ALU/ALU64) imm 1672 -> 2944
+libbpf: prog 'execveat_enter': relo #3: <byte_off> [318] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'execveat_enter': relo #3: matching candidate #0 <byte_off> [1948] struct nsproxy.pid_ns_for_children (0:4 @ offset 32)
+libbpf: prog 'execveat_enter': relo #3: patched insn #46 (ALU/ALU64) imm 32 -> 32
+libbpf: prog 'execveat_enter': relo #4: <byte_off> [325] struct pid_namespace.ns.inum (0:12:2 @ offset 136)
+libbpf: prog 'execveat_enter': relo #4: matching candidate #0 <byte_off> [1929] struct pid_namespace.ns.inum (0:11:2 @ offset 128)
+libbpf: prog 'execveat_enter': relo #4: patched insn #52 (ALU/ALU64) imm 136 -> 128
+libbpf: prog 'execveat_enter': relo #5: <byte_off> [318] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'execveat_enter': relo #5: matching candidate #0 <byte_off> [1948] struct nsproxy.uts_ns (0:1 @ offset 8)
+libbpf: prog 'execveat_enter': relo #5: patched insn #79 (ALU/ALU64) imm 8 -> 8
+libbpf: prog 'execveat_enter': relo #6: <byte_off> [357] struct uts_namespace.name.nodename (0:1:1 @ offset 69)
+libbpf: prog 'execveat_enter': relo #6: matching candidate #0 <byte_off> [2018] struct uts_namespace.name.nodename (0:0:1 @ offset 65)
+libbpf: prog 'execveat_enter': relo #6: patched insn #85 (ALU/ALU64) imm 69 -> 65
+libbpf: prog 'execveat_enter': relo #7: <byte_off> [47] struct task_struct.real_cred (0:83 @ offset 1584)
+libbpf: prog 'execveat_enter': relo #7: matching candidate #0 <byte_off> [172] struct task_struct.real_cred (0:105 @ offset 2832)
+libbpf: prog 'execveat_enter': relo #7: patched insn #104 (ALU/ALU64) imm 1584 -> 2832
+libbpf: prog 'execveat_enter': relo #8: <byte_off> [366] struct cred.cap_effective.cap[0] (0:12:0:0 @ offset 56)
+libbpf: prog 'execveat_enter': relo #8: matching candidate #0 <byte_off> [862] struct cred.cap_effective.cap[0] (0:12:0:0 @ offset 56)
+libbpf: prog 'execveat_enter': relo #8: patched insn #111 (ALU/ALU64) imm 56 -> 56
+libbpf: prog 'execveat_enter': relo #9: <byte_off> [366] struct cred.cap_effective.cap[1] (0:12:0:1 @ offset 60)
+libbpf: prog 'execveat_enter': relo #9: matching candidate #0 <byte_off> [862] struct cred.cap_effective.cap[1] (0:12:0:1 @ offset 60)
+libbpf: prog 'execveat_enter': relo #9: patched insn #125 (ALU/ALU64) imm 60 -> 60
+=================================================
