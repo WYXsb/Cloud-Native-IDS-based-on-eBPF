@@ -2138,6 +2138,7 @@ tracepoint:syscalls:sys_enter_writev
 
 END
 {
+	clear(@states);
 	printf("Tracing sliver implant end.\n");
 }
 

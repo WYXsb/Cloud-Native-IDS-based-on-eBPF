@@ -2100,11 +2100,9 @@ tracepoint:syscalls:sys_enter_writev
 
 
 
-
-
-
 END
 {
+	clear(@states);
 	printf("Tracing kinsing  end.\n");
 }
 

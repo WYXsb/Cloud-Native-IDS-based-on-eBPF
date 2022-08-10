@@ -29,3 +29,7 @@ tracepoint:syscalls:sys_enter_execveat
         // signal(9);
     }
 }
+
+END{
+    clear(@host_pidns);
+}

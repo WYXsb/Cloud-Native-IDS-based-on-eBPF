@@ -9,12 +9,12 @@ gcc ./mining/cmp.c -o ./mining/cmp
 }&
 
 {
-    bpftrace ./container/container_exec.bt               >  ./log/cont_exec.log
+    bpftrace ./container/container_monitor.bt               >  ./log/cont_exec.log
 }&
 
-{
-    bpftrace ./container/container_shell.bt              >  ./log/cont_shell.log
-}&
+# {
+#     bpftrace ./container/container_shell.bt              >  ./log/cont_shell.log
+# }&
 
 {
     ./hids   >  ./log/hids.log
