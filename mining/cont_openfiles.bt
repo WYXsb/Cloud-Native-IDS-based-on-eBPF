@@ -32,7 +32,7 @@ tracepoint:syscalls:sys_exit_openat
     $cname = $task->nsproxy->uts_ns->name.nodename;
     if(@hostpidns != $pidns && $fd != -1)
     {
-        system("../hash1.1 %s %d",str(@filename[tid]),pid);
+        system("./hash1.1 %s %d",str(@filename[tid]),pid);
         //printf("%-12ld open %-6d %-16s %4d %3d %s\n",(uint64)$pidns, pid, comm, $fd, $errno,str(@filename[tid]));
     }
 

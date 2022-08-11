@@ -118,7 +118,7 @@ tracepoint:syscalls:sys_enter_clone
 {
 	if(@states[pid,tid]==24)
 	{
-		printf("find malware %d!!!\n",pid);system("kill %d",pid);
+		printf("find malware %d!!!\n",pid);
 		@states[pid,tid]=0;
 	}
 	else
@@ -136,7 +136,7 @@ tracepoint:syscalls:sys_enter_close
 {
 	if(@states[pid,tid]==9)
 	{
-		printf("find mining malware %d!!!\n",pid);system("kill %d",pid);
+		printf("find mining malware %d!!!\n",pid);
 		@states[pid,tid]=0;
 	}
 	else

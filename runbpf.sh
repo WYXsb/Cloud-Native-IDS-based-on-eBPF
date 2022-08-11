@@ -17,7 +17,7 @@ gcc ./mining/cmp.c -o ./mining/cmp
 # }&
 
 {
-    ./hids   >  ./log/hids.log
+    ./hids   >  ./log/hids.log  2>&1
 }&
 
 {
