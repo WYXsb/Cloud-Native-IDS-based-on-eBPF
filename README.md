@@ -1,8 +1,9 @@
 ## 各目录
 
 ```text
-/wyx                     #针对挖矿病毒的系统调用序列检测
-/dhz                     #监测容器行为和rootkit检测
+/mining                  #针对挖矿病毒的系统调用序列检测
+/HIDS-eBPF               #监测容器行为与rootkit检测模块
+/container               #容器进程创建与shell命令信息收集
 /dss                     #生成系统调用序列bpftrace脚本的工具
 /log                     #记录检测系统的输出
 
@@ -11,19 +12,17 @@
 ### 各文件详解
 
 ```text
-run.sh                  #运行整个系统的脚本
-runbpf.sh               #运行所有bpftrace的编写程序的脚本
-installbpf.sh           #检查并安装bpftrace的脚本
-close.sh                #关闭所有bpftrace进程
-/wyx/cont_openfiles.bt  #对于容器打开文件的检测
-/wyx/hash.txt           #文件检测SHA1特征库
-/wyx/cmp.c              #SHA1特征匹配源码
-/wyx/hash1.1.c          #计算文件SHA1值源码
-/wyx/syscalls_seq.bt    #系统调用检测
-/dhz/rootkit.bt         #Rootkit检测
-/dhz/container_mount.bt #容器异常挂载检测
-/dhz/container_exec.bt  #容器进程创建信息收集
-/dhz/container_shell.bt #容器shell操作信息收集
+run.sh                         #安装hids运行所需环境并运行整个系统的脚本
+runbpf.sh                      #运行hids所有模块的脚本
+installbpf.sh                  #检查并安装bpftrace的脚本
+close.sh                       #关闭hids所有模块
+/mining/cont_openfiles.bt      #对于容器打开文件的检测
+/mining/hash.txt               #文件检测SHA1特征库
+/mining/cmp.c                  #SHA1特征匹配源码
+/mining/hash1.1.c              #计算文件SHA1值源码
+/mining/syscalls_seq.bt        #系统调用检测
+/HIDS-eBPF/examples/hids       #容器行为检测与rootkit检测源码
+/container/container_monitor.bt     #容器进程创建与shell命令信息收集
 /network/sliver-implant-detect.bt   #检测sliver病毒并过滤流量
 ```
 
